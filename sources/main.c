@@ -20,16 +20,24 @@ int main(void) {
 	}
 
 	new_chunk(data.chunks, 0, 0);
-	new_chunk(data.chunks, 1, 1);
-	new_cell(get_chunk(data.chunks, 0, 0)->cells, 5, 5);
-	new_cell(get_chunk(data.chunks, 1, 1)->cells, 0, 0);
+
+	// glider
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 60, 60);
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 59, 60);
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 58, 60);
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 58, 61);
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 59, 62);
+
+	// blinker
+	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 20, 20);
+	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 20, 21);
+	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 20, 22);
 
 
 	mlx_hook(data.mlx->win, 17, 0L, &exit_handling, &data);
 	mlx_hook(data.mlx->win, 2, 1L << 0, &key_pressed, &data);
 	
 	render(&data);
-	mlx_put_image_to_window(data.mlx->mlx, data.mlx->win, data.mlx->img, 0, 0);
 	mlx_loop(data.mlx->mlx);
 	
 	return (0);

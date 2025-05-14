@@ -17,6 +17,7 @@ SRC				=	main.c \
 					chunk.c \
 					input.c \
 					cell.c \
+					generation.c \
 
 MLX				=	libmlx.a
 

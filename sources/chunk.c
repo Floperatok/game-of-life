@@ -43,3 +43,20 @@ chunk_t	*get_chunk(chunk_t *hash_table[], int x, int y) {
 	}
 	return (NULL);
 }
+
+// debug
+void print_chunk(const unsigned char *cells) {
+	printf("\nCHUNK:\n");
+	int y = -1;
+	while (++y < CHUNK_SIZE) {
+		int x = -1;
+		while (++x < CHUNK_SIZE) {
+			if (get_cell(cells, x, y)) {
+				printf("# ");
+			} else {
+				printf(". ");
+			}
+		}
+		printf("\n");
+	}
+}

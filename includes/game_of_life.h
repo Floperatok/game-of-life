@@ -15,8 +15,8 @@
 #define BACKGROUND_COLOR 0x000000
 #define CELL_COLOR 0xffffff
 
-#define WIN_H 360
-#define WIN_W 480
+#define WIN_H 720
+#define WIN_W 1280
 
 typedef struct chunk_s
 {
@@ -49,6 +49,7 @@ int		init_chunks(data_t *data);
 void 	destroy_chunks(chunk_t *hash_table[]);
 int		new_chunk(chunk_t *hash_table[], int x, int y);
 chunk_t	*get_chunk(chunk_t *hash_table[], int x, int y);
+void	print_chunk(const unsigned char *cells);
 int		frame(void *arg);
 void	render(data_t *data);
 int		key_pressed(int keycode, data_t *data);
@@ -56,6 +57,6 @@ int		exit_handling(data_t *data);
 void	new_cell(unsigned char *data, int x, int y);
 void	kill_cell(unsigned char *data, int x, int y);
 int		get_cell(const unsigned char *data, int x, int y);
-
+void	next_generation(data_t *data);
 
 #endif

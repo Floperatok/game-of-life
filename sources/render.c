@@ -49,6 +49,7 @@ void display_chunk(mlx_t *mlx, chunk_t *chunk) {
 					chunk_posy + y * CELL_SIZE, \
 					size);
 			}
+			// display chunks grid
 			if (x == 0 || x == CHUNK_SIZE-1 || y == 0 || y == CHUNK_SIZE-1)
 				putpixel(mlx, chunk_posx+x*CELL_SIZE, chunk_posy+y*CELL_SIZE, 0xffffff);
 		}
@@ -62,5 +63,5 @@ void display_chunk(mlx_t *mlx, chunk_t *chunk) {
 void render(data_t *data) {
 	fill_screen(data->mlx, BACKGROUND_COLOR);
 	display_chunk(data->mlx, get_chunk(data->chunks, 0, 0));
-	display_chunk(data->mlx, get_chunk(data->chunks, 1, 1));
+	mlx_put_image_to_window(data->mlx->mlx, data->mlx->win, data->mlx->img, 0, 0);
 }
