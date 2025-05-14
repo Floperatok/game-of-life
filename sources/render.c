@@ -31,10 +31,26 @@ void display_cell(mlx_t *mlx, int posx, int posy, int size) {
 }
 
 #define CELL_SIZE 5
+void display_chunk_border(mlx_t *mlx, chunk_t *chunk) {
+	int chunk_posx = chunk->x * CHUNK_SIZE * CELL_SIZE;
+	int chunk_posy = chunk->y * CHUNK_SIZE * CELL_SIZE;
+	int chunk_pixel_size = CHUNK_SIZE * CELL_SIZE;
+	int i = -1;
+	while (++i < CHUNK_SIZE) {
+		int posx = i * CELL_SIZE + chunk_posx;
+		int posy = i * CELL_SIZE + chunk_posy;
+		putpixel(mlx, posx, 0, 0xffffff);
+		putpixel(mlx, posx, chunk_pixel_size + chunk_posy, 0xffffff);
+		putpixel(mlx, 0, posy, 0xffffff);
+		putpixel(mlx, chunk_pixel_size + chunk_posy, posy, 0xffffff);
+	}
+}
+
 void display_chunk(mlx_t *mlx, chunk_t *chunk) {
 	if (!chunk || !mlx) {
 		return ;
 	}
+	display_chunk_border(mlx, chunk);
 	int chunk_posx = chunk->x * CHUNK_SIZE * CELL_SIZE;
 	int chunk_posy = chunk->y * CHUNK_SIZE * CELL_SIZE;
 	int y = -1;
@@ -49,9 +65,6 @@ void display_chunk(mlx_t *mlx, chunk_t *chunk) {
 					chunk_posy + y * CELL_SIZE, \
 					size);
 			}
-			// display chunks grid
-			if (x == 0 || x == CHUNK_SIZE-1 || y == 0 || y == CHUNK_SIZE-1)
-				putpixel(mlx, chunk_posx+x*CELL_SIZE, chunk_posy+y*CELL_SIZE, 0xffffff);
 		}
 	}
 }
