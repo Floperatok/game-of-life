@@ -17,11 +17,11 @@ unsigned int hash_chunk(int x, int y) {
 	return abs(x + y * 73856093) % HASH_TABLE_SIZE;
 }
 
-int new_chunk(chunk_t *hash_table[], int x, int y) {
+chunk_t *new_chunk(chunk_t *hash_table[], int x, int y) {
 	unsigned int index = hash_chunk(x, y);
 	chunk_t *chunk = malloc(sizeof(chunk_t));
 	if (!chunk) {
-		return (0);
+		return (NULL);
 	}
 	chunk->x = x;
 	chunk->y = y;
@@ -31,7 +31,7 @@ int new_chunk(chunk_t *hash_table[], int x, int y) {
 	chunk->next = hash_table[index];
 	hash_table[index] = chunk;
 	printf("NEW CHUNK WITH INDEX: %u\n", index);
-	return (1);
+	return (chunk);
 }
 
 chunk_t	*get_chunk(chunk_t *hash_table[], int x, int y) {

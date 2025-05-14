@@ -1,65 +1,93 @@
 
 #include "game_of_life.h"
 
-int check_neighbor(chunk_t *chunk, chunk_t *neighbor_chunks[], int posx, int posy) {
+chunk_t *get_neighbor_chunk(chunk_t *neighbor_chunks[], int posx, int posy) {
 	if (posy < 0) {
 		if (posx < 0) {
-			return (neighbor_chunks[0] && get_cell(neighbor_chunks[0]->backup, CHUNK_SIZE-1, CHUNK_SIZE-1));
+			return (neighbor_chunks[0]);
 		} else if (posx >= CHUNK_SIZE) {
-			return (neighbor_chunks[2] && get_cell(neighbor_chunks[2]->backup, 0, CHUNK_SIZE-1));
+			return (neighbor_chunks[2]);
 		} else {
-			return (neighbor_chunks[1] && get_cell(neighbor_chunks[1]->backup, posx, CHUNK_SIZE-1));
+			return (neighbor_chunks[1]);
 		}
 	} else if (posy >= CHUNK_SIZE) {
 		if (posx < 0) {
-			return (neighbor_chunks[5] && get_cell(neighbor_chunks[5]->backup, CHUNK_SIZE-1, 0));
+			return (neighbor_chunks[6]);
 		} else if (posx >= CHUNK_SIZE) {
-			return (neighbor_chunks[7] && get_cell(neighbor_chunks[7]->backup, 0, 0));
+			return (neighbor_chunks[8]);
 		} else {
-			return (neighbor_chunks[6] && get_cell(neighbor_chunks[6]->backup, posx, 0));
+			return (neighbor_chunks[7]);
 		}
 	} else {
 		if (posx < 0) {
-			return (neighbor_chunks[3] && get_cell(neighbor_chunks[3]->backup, CHUNK_SIZE-1, posy));
+			return (neighbor_chunks[3]);
 		} else if (posx >= CHUNK_SIZE) {
-			return (neighbor_chunks[4] && get_cell(neighbor_chunks[4]->backup, 0, posy));
+			return (neighbor_chunks[5]);
 		} else {
-			return (get_cell(chunk->backup, posx, posy));
+			return (neighbor_chunks[4]);
 		}
 	}
-	return (0);
+}
+
+int count_neighbor(chunk_t *neighbor_chunks[], int cellx, int celly) {
+	int neighbor_count = 0;
+	int offset_y = -2;
+	while (++offset_y < 2 && neighbor_count < 4) {
+		int posy = celly + offset_y;
+		int offset_x = -2;
+		while (++offset_x < 2 && neighbor_count < 4) {
+			if (!offset_x && !offset_y) {
+				continue ;
+			}
+			int posx = cellx + offset_x;
+			chunk_t *chunk = get_neighbor_chunk(neighbor_chunks, posx, posy);
+			if (!chunk) {
+				continue;
+			}
+			neighbor_count += get_cell(chunk->backup, \
+				(posx%CHUNK_SIZE + CHUNK_SIZE) % CHUNK_SIZE, \
+				(posy%CHUNK_SIZE + CHUNK_SIZE) % CHUNK_SIZE);
+		}
+	}
+	return (neighbor_count);
+}
+
+void chunk_generation(chunk_t *neighbor_chunks[], chunk_t *hash_table[], int cellx, int celly) {
+	chunk_t *current_chunk = neighbor_chunks[4];
+	if (celly == 0 && !neighbor_chunks[1]) {
+		neighbor_chunks[1] = new_chunk(hash_table, current_chunk->x, current_chunk->y - 1);
+	} else if (celly == CHUNK_SIZE - 1 && !neighbor_chunks[7]) {
+		neighbor_chunks[7] = new_chunk(hash_table, current_chunk->x, current_chunk->y + 1);
+	}
+	if (cellx == 0 && !neighbor_chunks[3]) {
+		neighbor_chunks[3] = new_chunk(hash_table, current_chunk->x - 1, current_chunk->y);
+	} else if (cellx == CHUNK_SIZE - 1 && !neighbor_chunks[5]) {
+		neighbor_chunks[5] = new_chunk(hash_table, current_chunk->x + 1, current_chunk->y);
+	}
 }
 
 void chunk_next_generation(chunk_t *hash_table[], chunk_t *chunk) {
 	
-	chunk_t *neighbor_chunks[8];
+	chunk_t *neighbor_chunks[9];
 	neighbor_chunks[0] = get_chunk(hash_table, chunk->x - 1, chunk->y - 1);
 	neighbor_chunks[1] = get_chunk(hash_table, chunk->x    , chunk->y - 1);
 	neighbor_chunks[2] = get_chunk(hash_table, chunk->x + 1, chunk->y - 1);
 	neighbor_chunks[3] = get_chunk(hash_table, chunk->x - 1, chunk->y    );
-	neighbor_chunks[4] = get_chunk(hash_table, chunk->x + 1, chunk->y    );
-	neighbor_chunks[5] = get_chunk(hash_table, chunk->x - 1, chunk->y + 1);
-	neighbor_chunks[6] = get_chunk(hash_table, chunk->x    , chunk->y + 1);
-	neighbor_chunks[7] = get_chunk(hash_table, chunk->x + 1, chunk->y + 1);
+	neighbor_chunks[4] = chunk;
+	neighbor_chunks[5] = get_chunk(hash_table, chunk->x + 1, chunk->y    );
+	neighbor_chunks[6] = get_chunk(hash_table, chunk->x - 1, chunk->y + 1);
+	neighbor_chunks[7] = get_chunk(hash_table, chunk->x    , chunk->y + 1);
+	neighbor_chunks[8] = get_chunk(hash_table, chunk->x + 1, chunk->y + 1);
 
 	int celly = -1;
 	while (++celly < CHUNK_SIZE) {
 		int cellx = -1;
 		while (++cellx < CHUNK_SIZE) {
-			int neighbor_count = 0;
-			int offset_y = -2;
-			while (++offset_y < 2 && neighbor_count < 4) {
-				int posy = celly + offset_y;
-				int offset_x = -2;
-				while (++offset_x < 2 && neighbor_count < 4) {
-					if (!offset_x && !offset_y) {
-						continue ;
-					}
-					int posx = cellx + offset_x;
-					neighbor_count += check_neighbor(chunk, neighbor_chunks, posx, posy);
-				}
-			}
+			int neighbor_count = count_neighbor(neighbor_chunks, cellx, celly);
+
+
 			if (get_cell(chunk->backup, cellx, celly)) {
+				chunk_generation(neighbor_chunks, hash_table, cellx, celly);
 				if (neighbor_count == 2 || neighbor_count == 3) {
 					new_cell(chunk->cells, cellx, celly);
 				}

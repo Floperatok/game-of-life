@@ -48,7 +48,7 @@ typedef struct
 int		init_mlx(data_t *data);
 int		init_chunks(data_t *data);
 void 	destroy_chunks(chunk_t *hash_table[]);
-int		new_chunk(chunk_t *hash_table[], int x, int y);
+chunk_t	*new_chunk(chunk_t *hash_table[], int x, int y);
 chunk_t	*get_chunk(chunk_t *hash_table[], int x, int y);
 void	print_chunk(const unsigned char *cells);
 int		frame(void *arg);

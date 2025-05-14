@@ -49,7 +49,6 @@ int main(void) {
 
 	mlx_hook(data.mlx->win, 17, 0L, &exit_handling, &data);
 	mlx_hook(data.mlx->win, 2, 1L << 0, &key_pressed, &data);
-	printf("hello\n");
 	mlx_loop_hook(data.mlx->mlx, &frame, &data);
 	
 	render(&data);
