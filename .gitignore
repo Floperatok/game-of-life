@@ -1,0 +1,5 @@
+.vscode/
+*.supp
+vgcore.*
+objects/
+game_of_life
