@@ -15,6 +15,7 @@ void next_generation(data_t *data) {
 			int neighbory = -2;
 			while (++neighbory < 2 && neighbor_count < 4) {
 				int posy = celly + neighbory;
+				// overflow
 				if (posy < 0 || posy >= CHUNK_SIZE) {
 					continue ;
 				}

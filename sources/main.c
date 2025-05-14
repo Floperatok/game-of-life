@@ -20,18 +20,35 @@ int main(void) {
 	}
 
 	new_chunk(data.chunks, 0, 0);
+	new_chunk(data.chunks, 0, 1);
+	new_chunk(data.chunks, 1, 0);
+	new_chunk(data.chunks, 2, 0);
+	new_chunk(data.chunks, 1, 1);
+	new_chunk(data.chunks, 2, 1);
 
 	// glider
-	new_cell(get_chunk(data.chunks, 0, 0)->cells, 60, 60);
-	new_cell(get_chunk(data.chunks, 0, 0)->cells, 59, 60);
-	new_cell(get_chunk(data.chunks, 0, 0)->cells, 58, 60);
-	new_cell(get_chunk(data.chunks, 0, 0)->cells, 58, 61);
-	new_cell(get_chunk(data.chunks, 0, 0)->cells, 59, 62);
+	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 60, 60);
+	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 59, 60);
+	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 58, 60);
+	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 58, 61);
+	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 59, 62);
 
 	// blinker
 	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 20, 20);
 	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 20, 21);
 	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 20, 22);
+
+	// LWSS
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 20, 20);
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 20, 19);
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 20, 18);
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 19, 17);
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 19, 20);
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 18, 20);
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 17, 20);
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 16, 19);
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 16, 17);
+
 
 
 	mlx_hook(data.mlx->win, 17, 0L, &exit_handling, &data);

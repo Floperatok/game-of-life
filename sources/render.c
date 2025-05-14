@@ -32,17 +32,17 @@ void display_cell(mlx_t *mlx, int posx, int posy, int size) {
 
 #define CELL_SIZE 5
 void display_chunk_border(mlx_t *mlx, chunk_t *chunk) {
-	int chunk_posx = chunk->x * CHUNK_SIZE * CELL_SIZE;
-	int chunk_posy = chunk->y * CHUNK_SIZE * CELL_SIZE;
 	int chunk_pixel_size = CHUNK_SIZE * CELL_SIZE;
+	int chunk_posx = chunk->x * chunk_pixel_size;
+	int chunk_posy = chunk->y * chunk_pixel_size;
 	int i = -1;
-	while (++i < CHUNK_SIZE) {
+	while (++i <= CHUNK_SIZE) {
 		int posx = i * CELL_SIZE + chunk_posx;
 		int posy = i * CELL_SIZE + chunk_posy;
-		putpixel(mlx, posx, 0, 0xffffff);
-		putpixel(mlx, posx, chunk_pixel_size + chunk_posy, 0xffffff);
-		putpixel(mlx, 0, posy, 0xffffff);
-		putpixel(mlx, chunk_pixel_size + chunk_posy, posy, 0xffffff);
+		putpixel(mlx, posx, chunk_posy, 0xffffff);
+		putpixel(mlx, posx, chunk_posy + chunk_pixel_size, 0xffffff);
+		putpixel(mlx, chunk_posx, posy, 0xffffff);
+		putpixel(mlx, chunk_posx + chunk_pixel_size, posy, 0xffffff);
 	}
 }
 
@@ -76,5 +76,10 @@ void display_chunk(mlx_t *mlx, chunk_t *chunk) {
 void render(data_t *data) {
 	fill_screen(data->mlx, BACKGROUND_COLOR);
 	display_chunk(data->mlx, get_chunk(data->chunks, 0, 0));
+	display_chunk(data->mlx, get_chunk(data->chunks, 0, 1));
+	display_chunk(data->mlx, get_chunk(data->chunks, 1, 0));
+	display_chunk(data->mlx, get_chunk(data->chunks, 2, 0));
+	display_chunk(data->mlx, get_chunk(data->chunks, 1, 1));
+	display_chunk(data->mlx, get_chunk(data->chunks, 2, 1));
 	mlx_put_image_to_window(data->mlx->mlx, data->mlx->win, data->mlx->img, 0, 0);
 }
