@@ -26,6 +26,8 @@ int main(void) {
 	memset(data.inputs->buttons, 0, sizeof(data.inputs->buttons));
 	data.inputs->mouse_press_x = 0;
 	data.inputs->mouse_press_y = 0;
+	data.inputs->mouse_x = 0;
+	data.inputs->mouse_y = 0;
 
 	if (!init_mlx(&data) || !init_chunks(&data)) {
 		exit_handling(&data);

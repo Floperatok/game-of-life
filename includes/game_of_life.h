@@ -12,7 +12,7 @@
 #define MAX_KEYS 256
 #define MAX_BUTTONS 16
 
-#define CHUNK_BORDER 1
+#define CHUNK_BORDER 0
 #define CHUNK_SIZE 64
 #define CHUNK_BITS (CHUNK_SIZE * CHUNK_SIZE) / 8 + 7
 
@@ -48,7 +48,7 @@ typedef struct
 
 typedef struct 
 {
-	unsigned int	cell_size;
+	int	cell_size;
 	int				x;
 	int				y;
 }	camera_t;
@@ -57,6 +57,8 @@ typedef struct
 {
 	char		keys[MAX_KEYS];
 	char		buttons[MAX_BUTTONS];
+	int			mouse_x;
+	int			mouse_y;
 	int			mouse_press_x;
 	int			mouse_press_y;
 }	input_t;

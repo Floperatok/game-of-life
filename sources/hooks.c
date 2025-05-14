@@ -41,8 +41,12 @@ int key_released(int keycode, data_t *data)
 
 int button_pressed(int mouse_code, int x, int y, data_t *data) {
 	if (mouse_code == 4) { // scroll up
+		data->cam->x += (data->cam->x - data->inputs->mouse_x) / data->cam->cell_size;
+		data->cam->y += (data->cam->y - data->inputs->mouse_y) / data->cam->cell_size;
 		data->cam->cell_size++;
 	} else if (mouse_code == 5 && data->cam->cell_size > 1) { // scroll down
+		data->cam->x -= (data->cam->x - data->inputs->mouse_x) / data->cam->cell_size;
+		data->cam->y -= (data->cam->y - data->inputs->mouse_y) / data->cam->cell_size;
 		data->cam->cell_size--;
 	} else if (mouse_code == 1) { // left click
 		data->inputs->mouse_press_x = x - data->cam->x;
@@ -75,5 +79,7 @@ int mouse_move(int x, int y, data_t *data) {
 		data->cam->x = x - data->inputs->mouse_press_x;
 		data->cam->y = y - data->inputs->mouse_press_y;
 	}
+	data->inputs->mouse_x = x;
+	data->inputs->mouse_y = y;
 	return (0);
 }

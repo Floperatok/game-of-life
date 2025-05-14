@@ -3,7 +3,7 @@
 ####################################################################
 
 CC				=	gcc
-CFLAGS			=	-Wall -Werror -Wextra -g -std=gnu11
+CFLAGS			=	-Wall -Werror -Wextra -O3 -std=gnu11
 NAME			=	game_of_life
 
 ####################################################################
