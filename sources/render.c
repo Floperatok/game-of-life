@@ -3,7 +3,7 @@
 
 void	putpixel(mlx_t *mlx, int x, int y, int color)
 {
-	if (x < 0 || x > WIN_W || y < 0 || y > WIN_H) {
+	if (x < 0 || x >= WIN_W || y < 0 || y >= WIN_H) {
 		return ;
 	}
 	char *dst = (char *)mlx->addr + (y * mlx->line_length + x * (mlx->bpp / 8));
@@ -30,7 +30,6 @@ void display_cell(mlx_t *mlx, int posx, int posy, int size) {
 	}
 }
 
-#define CELL_SIZE 5
 void display_chunk_border(mlx_t *mlx, chunk_t *chunk) {
 	int chunk_pixel_size = CHUNK_SIZE * CELL_SIZE;
 	int chunk_posx = chunk->x * chunk_pixel_size;
@@ -47,10 +46,12 @@ void display_chunk_border(mlx_t *mlx, chunk_t *chunk) {
 }
 
 void display_chunk(mlx_t *mlx, chunk_t *chunk) {
-	if (!chunk || !mlx) {
+	if (!chunk) {
 		return ;
 	}
-	display_chunk_border(mlx, chunk);
+	if (CHUNK_BORDER) {
+		display_chunk_border(mlx, chunk);
+	}
 	int chunk_posx = chunk->x * CHUNK_SIZE * CELL_SIZE;
 	int chunk_posy = chunk->y * CHUNK_SIZE * CELL_SIZE;
 	int y = -1;
@@ -69,17 +70,27 @@ void display_chunk(mlx_t *mlx, chunk_t *chunk) {
 	}
 }
 
-// void display_all_chunks() {
-// 	(void)
-// }
+
+void display_visible_chunks(mlx_t *mlx, chunk_t *hash_table[], int cam_pos_x, int cam_pos_y) {
+	const int chunk_pixel_size = CHUNK_SIZE * CELL_SIZE;
+
+	int min_x = cam_pos_x / chunk_pixel_size;
+	int min_y = cam_pos_y / chunk_pixel_size;
+	
+	int max_x = (cam_pos_x + WIN_W) / chunk_pixel_size;
+	int max_y = (cam_pos_y + WIN_H) / chunk_pixel_size;
+
+	int y = min_y - 1;
+	while (++y <= max_y) {
+		int x = min_x - 1;
+		while (++x <= max_x) {
+			display_chunk(mlx, get_chunk(hash_table, x, y));
+		}
+	}
+}
 
 void render(data_t *data) {
 	fill_screen(data->mlx, BACKGROUND_COLOR);
-	display_chunk(data->mlx, get_chunk(data->chunks, 0, 0));
-	display_chunk(data->mlx, get_chunk(data->chunks, 0, 1));
-	display_chunk(data->mlx, get_chunk(data->chunks, 1, 0));
-	display_chunk(data->mlx, get_chunk(data->chunks, 2, 0));
-	display_chunk(data->mlx, get_chunk(data->chunks, 1, 1));
-	display_chunk(data->mlx, get_chunk(data->chunks, 2, 1));
+	display_visible_chunks(data->mlx, data->chunks, 0, 0);
 	mlx_put_image_to_window(data->mlx->mlx, data->mlx->win, data->mlx->img, 0, 0);
 }

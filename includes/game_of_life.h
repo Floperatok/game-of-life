@@ -9,6 +9,7 @@
 
 #define HASH_TABLE_SIZE 1024
 
+#define CHUNK_BORDER 1
 #define CHUNK_SIZE 64
 #define CHUNK_BITS (CHUNK_SIZE * CHUNK_SIZE) / 8 + 7
 
@@ -17,6 +18,10 @@
 
 #define WIN_H 720
 #define WIN_W 1280
+
+// temporary
+#define CELL_SIZE 5
+
 
 typedef struct chunk_s
 {
