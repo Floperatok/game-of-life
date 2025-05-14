@@ -2,6 +2,7 @@
 #include "game_of_life.h"
 
 int exit_handling(data_t *data) {
+	mlx_do_key_autorepeaton(data->mlx->mlx);
 	mlx_destroy_image(data->mlx->mlx, data->mlx->img);
 	mlx_destroy_window(data->mlx->mlx, data->mlx->win);
 	mlx_destroy_display(data->mlx->mlx);
@@ -13,8 +14,18 @@ int exit_handling(data_t *data) {
 int main(void) {
 	data_t data;
 	mlx_t mlx;
+	camera_t cam;
+	input_t inputs;
 	data.mlx = &mlx;
-	data.cell_size = 5;
+	data.cam = &cam;
+	data.inputs = &inputs;
+	data.cam->cell_size = 5;
+	data.cam->x = 0;
+	data.cam->y = 0;
+	memset(data.inputs->keys, 0, sizeof(data.inputs->keys));
+	memset(data.inputs->buttons, 0, sizeof(data.inputs->buttons));
+	data.inputs->mouse_press_x = 0;
+	data.inputs->mouse_press_y = 0;
 
 	if (!init_mlx(&data) || !init_chunks(&data)) {
 		exit_handling(&data);
@@ -46,14 +57,16 @@ int main(void) {
 	new_cell(get_chunk(data.chunks, 0, 0)->cells, 16, 19);
 	new_cell(get_chunk(data.chunks, 0, 0)->cells, 16, 17);
 
-
-
-	mlx_mouse_hook(data.mlx->win, &mouse_pressed, &data);
+	mlx_hook(data.mlx->win, 9, 1L << 21, &focus_in, &data);
+	mlx_hook(data.mlx->win, 10, 1L << 21, &focus_out, &data);
 	mlx_hook(data.mlx->win, 17, 0L, &exit_handling, &data);
 	mlx_hook(data.mlx->win, 2, 1L << 0, &key_pressed, &data);
+	mlx_hook(data.mlx->win, 3, 1L << 1, &key_released, &data);
+	mlx_hook(data.mlx->win, 4, 1L << 2, &button_pressed, &data);
+	mlx_hook(data.mlx->win, 5, 1L << 3, &button_released, &data);
+	mlx_hook(data.mlx->win, 6, 1L << 6, &mouse_move, &data);
 	mlx_loop_hook(data.mlx->mlx, &frame, &data);
-	
-	render(&data);
+
 	mlx_loop(data.mlx->mlx);
 	
 	return (0);

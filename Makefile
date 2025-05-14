@@ -16,6 +16,7 @@ SRC				=	main.c \
 					frame.c \
 					chunk.c \
 					input.c \
+					hooks.c \
 					cell.c \
 					generation.c \
 

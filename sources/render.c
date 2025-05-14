@@ -31,13 +31,13 @@ void display_cell(mlx_t *mlx, int posx, int posy, int size) {
 }
 
 void display_chunk_border(data_t *data, chunk_t *chunk) {
-	int chunk_pixel_size = CHUNK_SIZE * data->cell_size;
-	int chunk_posx = chunk->x * chunk_pixel_size;
-	int chunk_posy = chunk->y * chunk_pixel_size;
+	int chunk_pixel_size = CHUNK_SIZE * data->cam->cell_size;
+	int chunk_posx = chunk->x * chunk_pixel_size + data->cam->x;
+	int chunk_posy = chunk->y * chunk_pixel_size + data->cam->y;
 	int i = -1;
 	while (++i <= CHUNK_SIZE) {
-		int posx = i * data->cell_size + chunk_posx;
-		int posy = i * data->cell_size + chunk_posy;
+		int posx = i * data->cam->cell_size + chunk_posx;
+		int posy = i * data->cam->cell_size + chunk_posy;
 		putpixel(data->mlx, posx, chunk_posy, 0xffffff);
 		putpixel(data->mlx, posx, chunk_posy + chunk_pixel_size, 0xffffff);
 		putpixel(data->mlx, chunk_posx, posy, 0xffffff);
@@ -52,18 +52,18 @@ void display_chunk(data_t *data, chunk_t *chunk) {
 	if (CHUNK_BORDER) {
 		display_chunk_border(data, chunk);
 	}
-	int chunk_posx = chunk->x * CHUNK_SIZE * data->cell_size;
-	int chunk_posy = chunk->y * CHUNK_SIZE * data->cell_size;
+	int chunk_posx = chunk->x * CHUNK_SIZE * data->cam->cell_size + data->cam->x;
+	int chunk_posy = chunk->y * CHUNK_SIZE * data->cam->cell_size + data->cam->y;
 	int y = -1;
 	while (++y < CHUNK_SIZE) {
 		int x = -1;
 		while (++x < CHUNK_SIZE) {
 			if (get_cell(chunk->cells, x, y)) {
 
-				int size = data->cell_size;
+				int size = data->cam->cell_size;
 				display_cell(data->mlx, \
-					chunk_posx + x * data->cell_size, \
-					chunk_posy + y * data->cell_size, \
+					chunk_posx + x * data->cam->cell_size, \
+					chunk_posy + y * data->cam->cell_size, \
 					size);
 			}
 		}
@@ -71,14 +71,14 @@ void display_chunk(data_t *data, chunk_t *chunk) {
 }
 
 
-void display_visible_chunks(data_t *data, int cam_pos_x, int cam_pos_y) {
-	const int chunk_pixel_size = CHUNK_SIZE * data->cell_size;
+void display_visible_chunks(data_t *data) {
+	const int chunk_pixel_size = CHUNK_SIZE * data->cam->cell_size;
 
-	int min_x = cam_pos_x / chunk_pixel_size;
-	int min_y = cam_pos_y / chunk_pixel_size;
+	int min_x = data->cam->x / chunk_pixel_size;
+	int min_y = data->cam->y / chunk_pixel_size;
 	
-	int max_x = (cam_pos_x + WIN_W) / chunk_pixel_size;
-	int max_y = (cam_pos_y + WIN_H) / chunk_pixel_size;
+	int max_x = (data->cam->x + WIN_W) / chunk_pixel_size;
+	int max_y = (data->cam->y + WIN_H) / chunk_pixel_size;
 
 	int y = min_y - 1;
 	while (++y <= max_y) {
@@ -91,6 +91,6 @@ void display_visible_chunks(data_t *data, int cam_pos_x, int cam_pos_y) {
 
 void render(data_t *data) {
 	fill_screen(data->mlx, BACKGROUND_COLOR);
-	display_visible_chunks(data, 0, 0);
+	display_visible_chunks(data);
 	mlx_put_image_to_window(data->mlx->mlx, data->mlx->win, data->mlx->img, 0, 0);
 }

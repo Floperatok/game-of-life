@@ -1,10 +1,10 @@
 
 #include "game_of_life.h"
 
-int frame(void *arg) {
-	data_t *data = (data_t *)arg;
-	(void)data;
+int frame(data_t *data) {
+	user_input(data);
 	// next_generation(data->chunks);
-	// render(data);
+	render(data);
+
 	return (0);
 }

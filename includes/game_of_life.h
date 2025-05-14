@@ -6,8 +6,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 
 #define HASH_TABLE_SIZE 1024
+#define MAX_KEYS 256
+#define MAX_BUTTONS 16
 
 #define CHUNK_BORDER 1
 #define CHUNK_SIZE 64
@@ -43,11 +46,27 @@ typedef struct
 	int		endian;
 }	mlx_t;
 
+typedef struct 
+{
+	unsigned int	cell_size;
+	int				x;
+	int				y;
+}	camera_t;
+
+typedef struct 
+{
+	char		keys[MAX_KEYS];
+	char		buttons[MAX_BUTTONS];
+	int			mouse_press_x;
+	int			mouse_press_y;
+}	input_t;
+
 typedef struct
 {
-	mlx_t			*mlx;
-	chunk_t			*chunks[HASH_TABLE_SIZE];
-	unsigned int	cell_size;
+	mlx_t		*mlx;
+	chunk_t		*chunks[HASH_TABLE_SIZE];
+	camera_t	*cam;
+	input_t		*inputs;
 }	data_t;
 
 int		init_mlx(data_t *data);
@@ -56,14 +75,20 @@ void 	destroy_chunks(chunk_t *hash_table[]);
 chunk_t	*new_chunk(chunk_t *hash_table[], int x, int y);
 chunk_t	*get_chunk(chunk_t *hash_table[], int x, int y);
 void	print_chunk(const unsigned char *cells);
-int		frame(void *arg);
+int		frame(data_t *data);
 void	render(data_t *data);
-int		key_pressed(int keycode, data_t *data);
-int		mouse_pressed(int mouse_code, int x, int y, data_t *data);
+void	user_input(data_t *data);
 int		exit_handling(data_t *data);
 void	new_cell(unsigned char *data, int x, int y);
 void	kill_cell(unsigned char *data, int x, int y);
 int		get_cell(const unsigned char *data, int x, int y);
 void	next_generation(chunk_t *chunks[]);
+int		focus_in(data_t *data);
+int		focus_out(data_t *data);
+int		key_pressed(int keycode, data_t *data);
+int		key_released(int keycode, data_t *data);
+int		button_pressed(int mouse_code, int x, int y, data_t *data);
+int		button_released(int mouse_code, int x, int y, data_t *data);
+int		mouse_move(int x, int y, data_t *data);
 
 #endif
