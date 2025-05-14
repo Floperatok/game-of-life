@@ -20,7 +20,6 @@
 #define WIN_W 1280
 
 // temporary
-#define CELL_SIZE 5
 
 
 typedef struct chunk_s
@@ -48,6 +47,7 @@ typedef struct
 {
 	mlx_t			*mlx;
 	chunk_t			*chunks[HASH_TABLE_SIZE];
+	unsigned int	cell_size;
 }	data_t;
 
 int		init_mlx(data_t *data);
@@ -59,6 +59,7 @@ void	print_chunk(const unsigned char *cells);
 int		frame(void *arg);
 void	render(data_t *data);
 int		key_pressed(int keycode, data_t *data);
+int		mouse_pressed(int mouse_code, int x, int y, data_t *data);
 int		exit_handling(data_t *data);
 void	new_cell(unsigned char *data, int x, int y);
 void	kill_cell(unsigned char *data, int x, int y);

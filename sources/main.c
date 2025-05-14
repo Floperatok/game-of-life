@@ -14,6 +14,7 @@ int main(void) {
 	data_t data;
 	mlx_t mlx;
 	data.mlx = &mlx;
+	data.cell_size = 5;
 
 	if (!init_mlx(&data) || !init_chunks(&data)) {
 		exit_handling(&data);
@@ -47,6 +48,7 @@ int main(void) {
 
 
 
+	mlx_mouse_hook(data.mlx->win, &mouse_pressed, &data);
 	mlx_hook(data.mlx->win, 17, 0L, &exit_handling, &data);
 	mlx_hook(data.mlx->win, 2, 1L << 0, &key_pressed, &data);
 	mlx_loop_hook(data.mlx->mlx, &frame, &data);

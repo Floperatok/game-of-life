@@ -12,3 +12,18 @@ int key_pressed(int keycode, data_t *data) {
 	}
 	return (0);
 }
+
+int mouse_pressed(int mouse_code, int x, int y, data_t *data) {
+	(void)x;
+	(void)y;
+	if (mouse_code == 4) {
+		data->cell_size++;
+	} else if (mouse_code == 5 && data->cell_size > 1) {
+		data->cell_size--;
+	} else {
+		printf("MOUSE CODE: %d\n", mouse_code);
+		return (0);
+	}
+	render(data);
+	return (0);
+}
