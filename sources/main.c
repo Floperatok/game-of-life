@@ -20,19 +20,15 @@ int main(void) {
 	}
 
 	new_chunk(data.chunks, 0, 0);
-	new_chunk(data.chunks, 0, 1);
-	new_chunk(data.chunks, 1, 0);
-	new_chunk(data.chunks, 2, 0);
-	new_chunk(data.chunks, 1, 1);
-	new_chunk(data.chunks, 2, 1);
 
 	// glider
-	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 60, 60);
-	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 59, 60);
-	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 58, 60);
-	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 58, 61);
-	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 59, 62);
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 41, 40);
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 42, 41);
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 40, 42);
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 41, 42);
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 42, 42);
 
+	
 	// blinker
 	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 20, 20);
 	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 20, 21);
@@ -53,6 +49,8 @@ int main(void) {
 
 	mlx_hook(data.mlx->win, 17, 0L, &exit_handling, &data);
 	mlx_hook(data.mlx->win, 2, 1L << 0, &key_pressed, &data);
+	printf("hello\n");
+	mlx_loop_hook(data.mlx->mlx, &frame, &data);
 	
 	render(&data);
 	mlx_loop(data.mlx->mlx);

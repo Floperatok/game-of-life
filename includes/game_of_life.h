@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define HASH_TABLE_SIZE 3
+#define HASH_TABLE_SIZE 1024
 
 #define CHUNK_SIZE 64
 #define CHUNK_BITS (CHUNK_SIZE * CHUNK_SIZE) / 8 + 7
@@ -23,7 +23,8 @@ typedef struct chunk_s
 	int 			x;
 	int				y;
 	unsigned char	cells[CHUNK_BITS];
-	unsigned char	tmp[CHUNK_BITS];
+	unsigned char	backup[CHUNK_BITS];
+	char			is_backup;
 	struct chunk_s	*next;
 }	chunk_t;
 
@@ -57,6 +58,6 @@ int		exit_handling(data_t *data);
 void	new_cell(unsigned char *data, int x, int y);
 void	kill_cell(unsigned char *data, int x, int y);
 int		get_cell(const unsigned char *data, int x, int y);
-void	next_generation(data_t *data);
+void	next_generation(chunk_t *chunks[]);
 
 #endif
