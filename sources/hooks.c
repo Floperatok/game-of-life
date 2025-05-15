@@ -51,6 +51,8 @@ int button_pressed(int mouse_code, int x, int y, data_t *data) {
 	} else if (mouse_code == 1) { // left click
 		data->inputs->mouse_press_x = x - data->cam->x;
 		data->inputs->mouse_press_y = y - data->cam->y;
+	} else if (mouse_code == 3) { // right click
+		next_generation(data->chunks);
 	}
 	if (mouse_code < 0 || mouse_code >= MAX_BUTTONS)
 		return (0);
