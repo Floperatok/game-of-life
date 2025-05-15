@@ -16,13 +16,18 @@ int focus_out(data_t *data)
 
 int key_pressed(int keycode, data_t *data)
 {
-	if (keycode == 65307)
+	if (keycode == 65307) {
 		exit_handling(data);
-	if (keycode < 0 || keycode >= MAX_KEYS)
+	} else if (keycode == 110) {
+		next_generation(data->chunks);
+	}
+	if (keycode < 0 || keycode >= MAX_KEYS) {
 		return (0);
+	}
 
-	if (data->inputs->keys[keycode] == 1)
+	if (data->inputs->keys[keycode] == 1) {
 		return (0);
+	}
 
 	data->inputs->keys[keycode] = 1;
 

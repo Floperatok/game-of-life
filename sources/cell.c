@@ -30,7 +30,7 @@ void mouse_cell_edit(data_t *data, int mouse_posx, int mouse_posy, char draging)
 	}
 	chunk_t *chunk = get_chunk(data->chunks, chunk_posx, chunk_posy);
 	if (!chunk) {
-		return ;
+		chunk = new_chunk(data->chunks, chunk_posx, chunk_posy);
 	}
 	int posx_cell = (real_mouse_posx - chunk_posx * CHUNK_SIZE * data->cam->cell_size) / data->cam->cell_size % CHUNK_SIZE;
 	int posy_cell = (real_mouse_posy - chunk_posy * CHUNK_SIZE * data->cam->cell_size) / data->cam->cell_size % CHUNK_SIZE;

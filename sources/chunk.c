@@ -25,12 +25,11 @@ chunk_t *new_chunk(chunk_t *hash_table[], int x, int y) {
 	}
 	chunk->x = x;
 	chunk->y = y;
-	chunk->is_backup = 0;
 	memset(chunk->cells, 0, sizeof(chunk->cells));
 	memset(chunk->backup, 0, sizeof(chunk->backup));
 	chunk->next = hash_table[index];
 	hash_table[index] = chunk;
-	printf("NEW CHUNK WITH INDEX: %u\n", index);
+	printf("NEW CHUNK: %d,%d\n", x, y);
 	return (chunk);
 }
 

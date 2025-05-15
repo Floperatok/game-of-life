@@ -13,7 +13,7 @@
 #define MAX_KEYS 256
 #define MAX_BUTTONS 16
 
-#define CHUNK_BORDER 1
+#define CHUNK_BORDER 0
 #define CHUNK_SIZE 64
 #define CHUNK_BITS (CHUNK_SIZE * CHUNK_SIZE) / 8 + 7
 
@@ -32,7 +32,6 @@ typedef struct chunk_s
 	int				y;
 	unsigned char	cells[CHUNK_BITS];
 	unsigned char	backup[CHUNK_BITS];
-	char			is_backup;
 	struct chunk_s	*next;
 }	chunk_t;
 

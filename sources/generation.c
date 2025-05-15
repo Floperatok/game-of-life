@@ -98,41 +98,36 @@ void chunk_next_generation(chunk_t *hash_table[], chunk_t *chunk) {
 	}
 }
 
-void backup_chunks(chunk_t *hash_table[], chunk_t *chunk) {
-	if (!chunk || chunk->is_backup) {
-		return ;
+void backup_chunks(chunk_t *hash_table[]) {
+	int i = -1;
+	while (++i < HASH_TABLE_SIZE) {
+		chunk_t	*current = hash_table[i];
+		while (current) {
+			memcpy(current->backup, current->cells, sizeof(current->cells)); // copies chunks into temporary memory
+			memset(current->cells, 0, sizeof(current->cells)); // clear chunk
+			current = current->next;
+		}
 	}
-	memcpy(chunk->backup, chunk->cells, sizeof(chunk->cells)); // copies chunks into temporary memory
-	memset(chunk->cells, 0, sizeof(chunk->cells)); // clear chunk
-	chunk->is_backup = 1;
-	backup_chunks(hash_table, get_chunk(hash_table, chunk->x + 1, chunk->y));
-	backup_chunks(hash_table, get_chunk(hash_table, chunk->x - 1, chunk->y));
-	backup_chunks(hash_table, get_chunk(hash_table, chunk->x, chunk->y + 1));
-	backup_chunks(hash_table, get_chunk(hash_table, chunk->x, chunk->y - 1));
 }
 
-void compute_next_generation(chunk_t *hash_table[], chunk_t *chunk) {
-	if (!chunk || !chunk->is_backup) {
-		return ;
+void compute_next_generation(chunk_t *hash_table[]) {
+	int i = -1;
+	while (++i < HASH_TABLE_SIZE) {
+		chunk_t	*current = hash_table[i];
+		while (current) {
+			chunk_next_generation(hash_table, current);
+			current = current->next;
+		}
 	}
-
-	chunk_next_generation(hash_table, chunk);
-	chunk->is_backup = 0;
-	
-	compute_next_generation(hash_table, get_chunk(hash_table, chunk->x + 1, chunk->y));
-	compute_next_generation(hash_table, get_chunk(hash_table, chunk->x - 1, chunk->y));
-	compute_next_generation(hash_table, get_chunk(hash_table, chunk->x, chunk->y + 1));
-	compute_next_generation(hash_table, get_chunk(hash_table, chunk->x, chunk->y - 1));
 }
-
 
 unsigned int next_generation(chunk_t *chunks[]) 
 {
 	struct timeval start;
 	struct timeval end;
 	gettimeofday(&start, NULL);
-	backup_chunks(chunks, get_chunk(chunks, 0, 0));
-	compute_next_generation(chunks, get_chunk(chunks, 0, 0));
+	backup_chunks(chunks);
+	compute_next_generation(chunks);
 	gettimeofday(&end, NULL);
 	return ((end.tv_usec - start.tv_usec) + (end.tv_sec - start.tv_sec) * 1000000);
 }
