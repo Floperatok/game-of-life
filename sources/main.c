@@ -21,8 +21,8 @@ int main(void) {
 	data.cam = &cam;
 	data.inputs = &inputs;
 	data.cam->cell_size = 5;
-	data.cam->x = 0;
-	data.cam->y = 0;
+	data.cam->x = WIN_W / 2 - CHUNK_SIZE * data.cam->cell_size / 2;
+	data.cam->y = WIN_H / 2 - CHUNK_SIZE * data.cam->cell_size / 2;
 	memset(data.inputs->keys, 0, sizeof(data.inputs->keys));
 	memset(data.inputs->buttons, 0, sizeof(data.inputs->buttons));
 	data.inputs->mouse_press_x = 0;
@@ -40,11 +40,11 @@ int main(void) {
 	new_chunk(data.chunks, 0, 0);
 
 	// waa
-	new_cell(get_chunk(data.chunks, 0, 0)->cells, 40, 40);
-	new_cell(get_chunk(data.chunks, 0, 0)->cells, 40, 41);
-	new_cell(get_chunk(data.chunks, 0, 0)->cells, 40, 42);
-	new_cell(get_chunk(data.chunks, 0, 0)->cells, 41, 42);
-	new_cell(get_chunk(data.chunks, 0, 0)->cells, 39, 41);
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 10, 10);
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 10, 11);
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 10, 12);
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 11, 12);
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 9, 11);
 
 
 	// glider
