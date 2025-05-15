@@ -90,10 +90,19 @@ void display_visible_chunks(data_t *data) {
 }
 
 void render(data_t *data) {
+	struct timeval start;
+	struct timeval end;
+	gettimeofday(&start, NULL);
 	fill_screen(data->mlx, BACKGROUND_COLOR);
 	display_visible_chunks(data);
 	mlx_put_image_to_window(data->mlx->mlx, data->mlx->win, data->mlx->img, 0, 0);
-	char buff[22];
+	gettimeofday(&end, NULL);
+	unsigned int render_time = (end.tv_usec - start.tv_usec) + (end.tv_sec - start.tv_sec) * 1000000;
+	char buff[64];
 	sprintf(buff, "Generation: %d", data->generation_count);
 	mlx_string_put(data->mlx->mlx, data->mlx->win, 20, 20, 0xffffff, buff);
+	sprintf(buff, "Generation Time: %.3fms", data->generation_time / 1000.0f);
+	mlx_string_put(data->mlx->mlx, data->mlx->win, 20, 40, 0xffffff, buff);
+	sprintf(buff, "Render Time: %.3fms", render_time / 1000.0f);
+	mlx_string_put(data->mlx->mlx, data->mlx->win, 20, 60, 0xffffff, buff);
 }

@@ -126,8 +126,13 @@ void compute_next_generation(chunk_t *hash_table[], chunk_t *chunk) {
 }
 
 
-void next_generation(chunk_t *chunks[]) 
+unsigned int next_generation(chunk_t *chunks[]) 
 {
+	struct timeval start;
+	struct timeval end;
+	gettimeofday(&start, NULL);
 	backup_chunks(chunks, get_chunk(chunks, 0, 0));
 	compute_next_generation(chunks, get_chunk(chunks, 0, 0));
+	gettimeofday(&end, NULL);
+	return ((end.tv_usec - start.tv_usec) + (end.tv_sec - start.tv_sec) * 1000000);
 }

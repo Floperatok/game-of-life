@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include <sys/time.h>
 
-#define HASH_TABLE_SIZE 128
+#define HASH_TABLE_SIZE 1024
 #define MAX_KEYS 256
 #define MAX_BUTTONS 16
 
@@ -45,8 +45,6 @@ typedef struct
 	int				line_length;
 	int				bpp;
 	int				endian;
-	unsigned int	framerate;
-	unsigned int	frame_count;
 	struct timeval	*last_frame_time;
 }	mlx_t;
 
@@ -75,28 +73,29 @@ typedef struct
 	camera_t		*cam;
 	input_t			*inputs;
 	unsigned int	generation_count;
+	unsigned int	generation_time;
 }	data_t;
 
-int		init_mlx(data_t *data);
-int		init_chunks(data_t *data);
-void 	destroy_chunks(chunk_t *hash_table[]);
-chunk_t	*new_chunk(chunk_t *hash_table[], int x, int y);
-chunk_t	*get_chunk(chunk_t *hash_table[], int x, int y);
-void	print_chunk(const unsigned char *cells);
-int		frame(data_t *data);
-void	render(data_t *data);
-void	user_input(data_t *data);
-int		exit_handling(data_t *data);
-void	new_cell(unsigned char *data, int x, int y);
-void	kill_cell(unsigned char *data, int x, int y);
-int		get_cell(const unsigned char *data, int x, int y);
-void	next_generation(chunk_t *chunks[]);
-int		focus_in(data_t *data);
-int		focus_out(data_t *data);
-int		key_pressed(int keycode, data_t *data);
-int		key_released(int keycode, data_t *data);
-int		button_pressed(int mouse_code, int x, int y, data_t *data);
-int		button_released(int mouse_code, int x, int y, data_t *data);
-int		mouse_move(int x, int y, data_t *data);
+int				init_mlx(data_t *data);
+int				init_chunks(data_t *data);
+void 			destroy_chunks(chunk_t *hash_table[]);
+chunk_t			*new_chunk(chunk_t *hash_table[], int x, int y);
+chunk_t			*get_chunk(chunk_t *hash_table[], int x, int y);
+void			print_chunk(const unsigned char *cells);
+int				frame(data_t *data);
+void			render(data_t *data);
+void			user_input(data_t *data);
+int				exit_handling(data_t *data);
+void			new_cell(unsigned char *data, int x, int y);
+void			kill_cell(unsigned char *data, int x, int y);
+int				get_cell(const unsigned char *data, int x, int y);
+unsigned int	next_generation(chunk_t *chunks[]);
+int				focus_in(data_t *data);
+int				focus_out(data_t *data);
+int				key_pressed(int keycode, data_t *data);
+int				key_released(int keycode, data_t *data);
+int				button_pressed(int mouse_code, int x, int y, data_t *data);
+int				button_released(int mouse_code, int x, int y, data_t *data);
+int				mouse_move(int x, int y, data_t *data);
 
 #endif

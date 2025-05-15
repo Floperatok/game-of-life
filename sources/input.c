@@ -4,7 +4,7 @@
 void user_input(data_t *data) {
 	// KEYBOARD
 	if (data->inputs->keys[32]) { // space
-		next_generation(data->chunks);
+		data->generation_time = next_generation(data->chunks);
 		data->generation_count++;
 	}
 

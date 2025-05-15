@@ -53,11 +53,8 @@ int button_pressed(int mouse_code, int x, int y, data_t *data) {
 		data->inputs->mouse_press_x = x - data->cam->x;
 		data->inputs->mouse_press_y = y - data->cam->y;
 	} else if (mouse_code == 3) { // right click
-		next_generation(data->chunks);
+		data->generation_time = next_generation(data->chunks);
 		data->generation_count++;
-		char buff[22];
-		sprintf(buff, "Generation: %d", data->generation_count);
-		mlx_string_put(data->mlx->mlx, data->mlx->win, 20, 20, 0xffffff, buff);
 	}
 	if (mouse_code < 0 || mouse_code >= MAX_BUTTONS)
 		return (0);
