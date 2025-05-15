@@ -28,6 +28,7 @@ int main(void) {
 	data.inputs->mouse_press_y = 0;
 	data.inputs->mouse_x = 0;
 	data.inputs->mouse_y = 0;
+	data.inputs->mouse_has_moved = 0;
 
 	if (!init_mlx(&data) || !init_chunks(&data)) {
 		exit_handling(&data);

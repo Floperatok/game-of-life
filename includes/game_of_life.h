@@ -8,7 +8,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#define HASH_TABLE_SIZE 1024
+#define HASH_TABLE_SIZE 128
 #define MAX_KEYS 256
 #define MAX_BUTTONS 16
 
@@ -61,6 +61,7 @@ typedef struct
 	int			mouse_y;
 	int			mouse_press_x;
 	int			mouse_press_y;
+	char		mouse_has_moved;
 }	input_t;
 
 typedef struct
