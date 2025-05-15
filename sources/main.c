@@ -27,9 +27,7 @@ int main(void) {
 	memset(data.inputs->buttons, 0, sizeof(data.inputs->buttons));
 	data.inputs->mouse_press_x = 0;
 	data.inputs->mouse_press_y = 0;
-	data.inputs->mouse_x = 0;
-	data.inputs->mouse_y = 0;
-	data.inputs->mouse_has_moved = 0;
+	data.inputs->creating_cells = 1;
 	data.generation_count = 0;
 	data.generation_time = 0;
 	data.mlx->last_frame_time = &last_frame_time;

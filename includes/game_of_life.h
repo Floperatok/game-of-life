@@ -59,11 +59,9 @@ typedef struct
 {
 	char		keys[MAX_KEYS];
 	char		buttons[MAX_BUTTONS];
-	int			mouse_x;
-	int			mouse_y;
 	int			mouse_press_x;
 	int			mouse_press_y;
-	char		mouse_has_moved;
+	char		creating_cells;
 }	input_t;
 
 typedef struct
@@ -97,5 +95,5 @@ int				key_released(int keycode, data_t *data);
 int				button_pressed(int mouse_code, int x, int y, data_t *data);
 int				button_released(int mouse_code, int x, int y, data_t *data);
 int				mouse_move(int x, int y, data_t *data);
-
+void			mouse_cell_edit(data_t *data, int mouse_posx, int mouse_posy, char draging);
 #endif

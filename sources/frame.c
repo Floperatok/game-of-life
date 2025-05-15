@@ -13,7 +13,7 @@ int frame(data_t *data) {
 	unsigned int frame_time = (time.tv_usec - data->mlx->last_frame_time->tv_usec) + (time.tv_sec - data->mlx->last_frame_time->tv_sec) * 1000000;
 
 	char buff[64];
-	sprintf(buff, "Total frame time: %.3fms", frame_time / 1000.0f);
+	sprintf(buff, "Total Frame Time: %.3fms", frame_time / 1000.0f);
 	mlx_string_put(data->mlx->mlx, data->mlx->win, 20, 80, 0xffffff, buff);
 	data->mlx->last_frame_time->tv_sec = time.tv_sec;
 	data->mlx->last_frame_time->tv_usec = time.tv_usec;

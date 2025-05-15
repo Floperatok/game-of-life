@@ -101,8 +101,8 @@ void render(data_t *data) {
 	char buff[64];
 	sprintf(buff, "Generation: %d", data->generation_count);
 	mlx_string_put(data->mlx->mlx, data->mlx->win, 20, 20, 0xffffff, buff);
-	sprintf(buff, "Generation Time: %.3fms", data->generation_time / 1000.0f);
+	sprintf(buff, "Generation Time:  %.3fms", data->generation_time / 1000.0f);
 	mlx_string_put(data->mlx->mlx, data->mlx->win, 20, 40, 0xffffff, buff);
-	sprintf(buff, "Render Time: %.3fms", render_time / 1000.0f);
+	sprintf(buff, "Render Time:      %.3fms", render_time / 1000.0f);
 	mlx_string_put(data->mlx->mlx, data->mlx->win, 20, 60, 0xffffff, buff);
 }
