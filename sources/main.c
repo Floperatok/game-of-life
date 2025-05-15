@@ -16,6 +16,7 @@ int main(void) {
 	mlx_t mlx;
 	camera_t cam;
 	input_t inputs;
+	struct timeval last_frame_time;
 	data.mlx = &mlx;
 	data.cam = &cam;
 	data.inputs = &inputs;
@@ -29,6 +30,11 @@ int main(void) {
 	data.inputs->mouse_x = 0;
 	data.inputs->mouse_y = 0;
 	data.inputs->mouse_has_moved = 0;
+	data.generation_count = 0;
+	data.mlx->frame_count = 0;
+	data.mlx->last_frame_time = &last_frame_time;
+	data.mlx->framerate = 0;
+
 
 	if (!init_mlx(&data) || !init_chunks(&data)) {
 		exit_handling(&data);
@@ -36,12 +42,20 @@ int main(void) {
 
 	new_chunk(data.chunks, 0, 0);
 
-	// glider
-	new_cell(get_chunk(data.chunks, 0, 0)->cells, 41, 40);
-	new_cell(get_chunk(data.chunks, 0, 0)->cells, 42, 41);
+	// waa
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 40, 40);
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 40, 41);
 	new_cell(get_chunk(data.chunks, 0, 0)->cells, 40, 42);
 	new_cell(get_chunk(data.chunks, 0, 0)->cells, 41, 42);
-	new_cell(get_chunk(data.chunks, 0, 0)->cells, 42, 42);
+	new_cell(get_chunk(data.chunks, 0, 0)->cells, 39, 41);
+
+
+	// glider
+	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 41, 40);
+	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 42, 41);
+	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 40, 42);
+	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 41, 42);
+	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 42, 42);
 
 	
 	// blinker
@@ -50,16 +64,17 @@ int main(void) {
 	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 20, 22);
 
 	// LWSS
-	new_cell(get_chunk(data.chunks, 0, 0)->cells, 20, 20);
-	new_cell(get_chunk(data.chunks, 0, 0)->cells, 20, 19);
-	new_cell(get_chunk(data.chunks, 0, 0)->cells, 20, 18);
-	new_cell(get_chunk(data.chunks, 0, 0)->cells, 19, 17);
-	new_cell(get_chunk(data.chunks, 0, 0)->cells, 19, 20);
-	new_cell(get_chunk(data.chunks, 0, 0)->cells, 18, 20);
-	new_cell(get_chunk(data.chunks, 0, 0)->cells, 17, 20);
-	new_cell(get_chunk(data.chunks, 0, 0)->cells, 16, 19);
-	new_cell(get_chunk(data.chunks, 0, 0)->cells, 16, 17);
+	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 20, 20);
+	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 20, 19);
+	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 20, 18);
+	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 19, 17);
+	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 19, 20);
+	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 18, 20);
+	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 17, 20);
+	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 16, 19);
+	// new_cell(get_chunk(data.chunks, 0, 0)->cells, 16, 17);
 
+	gettimeofday(data.mlx->last_frame_time, NULL);
 	mlx_hook(data.mlx->win, 9, 1L << 21, &focus_in, &data);
 	mlx_hook(data.mlx->win, 10, 1L << 21, &focus_out, &data);
 	mlx_hook(data.mlx->win, 17, 0L, &exit_handling, &data);

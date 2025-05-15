@@ -93,4 +93,7 @@ void render(data_t *data) {
 	fill_screen(data->mlx, BACKGROUND_COLOR);
 	display_visible_chunks(data);
 	mlx_put_image_to_window(data->mlx->mlx, data->mlx->win, data->mlx->img, 0, 0);
+	char buff[22];
+	sprintf(buff, "Generation: %d", data->generation_count);
+	mlx_string_put(data->mlx->mlx, data->mlx->win, 20, 20, 0xffffff, buff);
 }

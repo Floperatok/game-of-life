@@ -7,12 +7,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/time.h>
 
 #define HASH_TABLE_SIZE 128
 #define MAX_KEYS 256
 #define MAX_BUTTONS 16
 
-#define CHUNK_BORDER 0
+#define CHUNK_BORDER 1
 #define CHUNK_SIZE 64
 #define CHUNK_BITS (CHUNK_SIZE * CHUNK_SIZE) / 8 + 7
 
@@ -37,13 +38,16 @@ typedef struct chunk_s
 
 typedef struct
 {
-	void	*mlx;
-	void	*win;
-	void	*img;
-	char	*addr;
-	int		line_length;
-	int		bpp;
-	int		endian;
+	void			*mlx;
+	void			*win;
+	void			*img;
+	char			*addr;
+	int				line_length;
+	int				bpp;
+	int				endian;
+	unsigned int	framerate;
+	unsigned int	frame_count;
+	struct timeval	*last_frame_time;
 }	mlx_t;
 
 typedef struct 
@@ -66,10 +70,11 @@ typedef struct
 
 typedef struct
 {
-	mlx_t		*mlx;
-	chunk_t		*chunks[HASH_TABLE_SIZE];
-	camera_t	*cam;
-	input_t		*inputs;
+	mlx_t			*mlx;
+	chunk_t			*chunks[HASH_TABLE_SIZE];
+	camera_t		*cam;
+	input_t			*inputs;
+	unsigned int	generation_count;
 }	data_t;
 
 int		init_mlx(data_t *data);
