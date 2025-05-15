@@ -74,8 +74,8 @@ void display_chunk(data_t *data, chunk_t *chunk) {
 void display_visible_chunks(data_t *data) {
 	const int chunk_pixel_size = CHUNK_SIZE * data->cam->cell_size;
 
-	int min_x = -data->cam->x / chunk_pixel_size;
-	int min_y = -data->cam->y / chunk_pixel_size;
+	int min_x = -data->cam->x / chunk_pixel_size - 1;
+	int min_y = -data->cam->y / chunk_pixel_size - 1;
 	
 	int max_x = (-data->cam->x + WIN_W) / chunk_pixel_size;
 	int max_y = (-data->cam->y + WIN_H) / chunk_pixel_size;
