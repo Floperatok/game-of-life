@@ -20,8 +20,8 @@ void mouse_cell_edit(data_t *data, int mouse_posx, int mouse_posy, char draging)
 	int chunk_size = data->cam->cell_size * CHUNK_SIZE;
 	int real_mouse_posx = -data->cam->x + mouse_posx;
 	int real_mouse_posy = -data->cam->y + mouse_posy;
-	int chunk_posx = real_mouse_posx / chunk_size;
-	int chunk_posy = real_mouse_posy / chunk_size;
+	int chunk_posx = (real_mouse_posx + 1) / chunk_size;
+	int chunk_posy = (real_mouse_posy + 1) / chunk_size;
 	if (real_mouse_posx < 0) {
 		chunk_posx--;
 	}
@@ -30,16 +30,23 @@ void mouse_cell_edit(data_t *data, int mouse_posx, int mouse_posy, char draging)
 	}
 	chunk_t *chunk = get_chunk(data->chunks, chunk_posx, chunk_posy);
 	if (!chunk) {
-		chunk = new_chunk(data->chunks, chunk_posx, chunk_posy);
+		if (data->inputs->creating_cells) {
+			chunk = new_chunk(data->chunks, chunk_posx, chunk_posy);
+		} else {
+			return ;
+		}
 	}
-	int posx_cell = (real_mouse_posx - chunk_posx * CHUNK_SIZE * data->cam->cell_size) / data->cam->cell_size % CHUNK_SIZE;
-	int posy_cell = (real_mouse_posy - chunk_posy * CHUNK_SIZE * data->cam->cell_size) / data->cam->cell_size % CHUNK_SIZE;
+	int cell_posx = (real_mouse_posx - chunk_posx * CHUNK_SIZE * data->cam->cell_size) / data->cam->cell_size % CHUNK_SIZE;
+	int cell_posy = (real_mouse_posy - chunk_posy * CHUNK_SIZE * data->cam->cell_size) / data->cam->cell_size % CHUNK_SIZE;
+
+
 	if (!draging) {
-		data->inputs->creating_cells = !get_cell(chunk->cells, posx_cell, posy_cell);
+		data->inputs->creating_cells = !get_cell(chunk->cells, cell_posx, cell_posy);
 	}
 	if (data->inputs->creating_cells) {
-		new_cell(chunk->cells, posx_cell, posy_cell);
+		printf("NEW CELL: %d,%d     CHUNK: %d,%d   MOUSE POS: %d,%d   CHUNK SIZE: %d   CELL SIZE: %d   COMPUTE SHIT: %d,%d\n", cell_posx, cell_posy, chunk_posx, chunk_posy, real_mouse_posx, real_mouse_posy, CHUNK_SIZE, data->cam->cell_size, (real_mouse_posx - chunk_posx * CHUNK_SIZE * data->cam->cell_size), (real_mouse_posy - chunk_posy * CHUNK_SIZE * data->cam->cell_size));
+		new_cell(chunk->cells, cell_posx, cell_posy);
 	} else {
-		kill_cell(chunk->cells, posx_cell, posy_cell);
+		kill_cell(chunk->cells, cell_posx, cell_posy);
 	}
 }
